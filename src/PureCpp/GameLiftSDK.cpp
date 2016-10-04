@@ -25,7 +25,7 @@ bool GL_Initialize(
 	::onStartGameSession = onStartGameSession;
 	::onProcesTerminate = onProcesTerminate;
 	::onHealthCheck = onHealthCheck;
-
+	
 	// TODO : 경로 파라미터로 밧음
 	std::string serverOut("logs\\serverOut.log");
 	std::string serverErr("logs\\serverErr.log");

@@ -3,15 +3,9 @@
 using namespace System;
 
 namespace GameLiftNet {
-	
-
 	public ref class GameSession
 	{
-
-	};
-	public ref class PlayerSession
-	{
-
+		/* TODO : 필드 채우기 */
 	};
 
 	public ref class Server
