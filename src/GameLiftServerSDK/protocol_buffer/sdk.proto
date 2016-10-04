@@ -1,0 +1,71 @@
+syntax = "proto2";
+package com.amazon.whitewater.auxproxy.pbuffer;
+
+//SDK --> AuxProxy
+message ProcessReady {
+    repeated string logPathsToUpload = 1;
+    optional int32 port = 2;
+}
+
+message ProcessEnding {
+}
+
+message GameSessionActivate {
+    optional string gameSessionId = 1;
+    optional int32 maxPlayers = 2;
+}
+
+message GameSessionTerminate {
+    optional string gameSessionId = 1;
+}
+
+message UpdatePlayerSessionCreationPolicy {
+	optional string gameSessionId = 1;
+	optional string newPlayerSessionCreationPolicy = 2;
+}
+
+message AcceptPlayerSession {
+    optional string gameSessionId = 1;
+    optional string playerSessionId = 2;
+}
+
+message RemovePlayerSession {
+    optional string gameSessionId = 1;
+    optional string playerSessionId = 2;
+}
+
+message ReportHealth {
+    optional bool healthStatus = 1;
+}
+
+//AuxProxy --> Sdk
+message ActivateGameSession {
+    optional GameSession gameSession = 1;
+}
+
+message TerminateProcess {
+}
+
+//Common objects
+message Response {
+    enum Status {
+    OK = 0;
+    ERROR = 1;
+  }
+  optional Status status = 1;
+  optional string errorMessage = 2;
+}
+
+message GameSession {
+    optional string gameSessionId = 1;
+    optional string fleetId = 2;
+    optional string name = 3;
+    optional int32 maxPlayers = 4;
+    optional bool joinable = 5;
+    repeated GameProperty gameProperties = 6;
+}
+
+message GameProperty {
+    optional string key = 1;
+    optional string value = 2;
+}
