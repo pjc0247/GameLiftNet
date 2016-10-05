@@ -8,6 +8,7 @@ using GameLiftNet;
 
 Server::Initialize(
     PORT,
+    "stdout.log", "stderr.log",
     OnStartGameSession, OnProcessTerminate, OnHealthCheck);
 
 void OnStartGameSession(GameSession gameSession){
