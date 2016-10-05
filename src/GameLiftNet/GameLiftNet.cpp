@@ -20,6 +20,24 @@ namespace GameLiftNet {
 		static Server::HealthCheckCallback ^onHealthCheck;
 	};
 
+	class ManagedStringHolder {
+	public:
+		ManagedStringHolder(String ^managedString)
+			: strPtr((Marshal::StringToHGlobalAnsi(managedString)).ToPointer())
+		{
+		}
+		~ManagedStringHolder() {
+			Marshal::FreeHGlobal((IntPtr)strPtr);
+		}
+
+		const char *getPtr() {
+			return (char*)strPtr;
+		}
+
+	private:
+		void *strPtr;
+	};
+
 	static void OnStartGameSession(::GameSession *gameSession) {
 		auto clrGameSession = gcnew GameSession();
 
@@ -35,6 +53,7 @@ namespace GameLiftNet {
 
 	void Server::Initialize(
 		int port,
+		String ^stdoutPath, String ^stderrPath,
 		StartGameSessionCallback ^onStartGameSession,
 		ProcessTerminateCallback ^onProcessTerminate,
 		HealthCheckCallback ^onHealthCheck) {
@@ -43,7 +62,11 @@ namespace GameLiftNet {
 		CallbackStorage::onProcessTerminate = onProcessTerminate;
 		CallbackStorage::onHealthCheck = onHealthCheck;
 
+		ManagedStringHolder cppStdoutPath(stdoutPath);
+		ManagedStringHolder cppStderrPath(stderrPath);
+
 		GL_Initialize(port,
+			cppStdoutPath.getPtr(), cppStderrPath.getPtr(),
 			OnStartGameSession,
 			OnProcessTerminate,
 			OnHealthCheck);
@@ -63,17 +86,13 @@ namespace GameLiftNet {
 	}
 
 	bool Server::AcceptPlayerSession(String ^playerSessionId) {
-		auto strPtr = (IntPtr)(Marshal::StringToHGlobalAnsi(playerSessionId)).ToPointer();
-		auto ret = GL_AcceptPlayerSession((const char*)(void*)strPtr);
-		Marshal::FreeHGlobal(strPtr);
-
+		ManagedStringHolder cppPlayerSessionId(playerSessionId);
+		auto ret = GL_AcceptPlayerSession(cppPlayerSessionId.getPtr());
 		return ret;
 	}
 	bool Server::RemovePlayerSession(String ^playerSessionId) {
-		auto strPtr = (IntPtr)(Marshal::StringToHGlobalAnsi(playerSessionId)).ToPointer();
-		auto ret = GL_RemovePlayerSession((const char*)(void*)strPtr);
-		Marshal::FreeHGlobal(strPtr);
-
+		ManagedStringHolder cppPlayerSessionId(playerSessionId);
+		auto ret = GL_RemovePlayerSession(cppPlayerSessionId.getPtr());
 		return ret;
 	}
 }

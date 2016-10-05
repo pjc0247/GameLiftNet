@@ -16,6 +16,7 @@ bool OnHealthCheck();
 
 bool GL_Initialize(
 	int listenPort,
+	const char *stdoutPath, const char *stderrPath,
 	void (*onStartGameSession)(GameSession *),
 	void(*onProcesTerminate)(),
 	bool(*onHealthCheck)()) {
@@ -26,12 +27,9 @@ bool GL_Initialize(
 	::onProcesTerminate = onProcesTerminate;
 	::onHealthCheck = onHealthCheck;
 	
-	// TODO : 경로 파라미터로 밧음
-	std::string serverOut("logs\\serverOut.log");
-	std::string serverErr("logs\\serverErr.log");
 	std::vector<std::string> logPaths;
-	logPaths.push_back(serverOut);
-	logPaths.push_back(serverErr);
+	logPaths.push_back(stdoutPath);
+	logPaths.push_back(stderrPath);
 
 	auto params = Aws::GameLift::Server::ProcessParameters(
 		OnStartGameSession,
@@ -50,10 +48,10 @@ void GL_Destroy() {
 }
 
 bool GL_ActivateGameSession() {
-	Aws::GameLift::Server::ActivateGameSession().IsSuccess();
+	return Aws::GameLift::Server::ActivateGameSession().IsSuccess();
 }
 bool GL_TerminateGameSession() {
-	Aws::GameLift::Server::TerminateGameSession().IsSuccess();
+	return Aws::GameLift::Server::TerminateGameSession().IsSuccess();
 }
 
 bool GL_AcceptPlayerSession(const char *playerSessionId) {

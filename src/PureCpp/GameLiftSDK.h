@@ -13,6 +13,7 @@ extern "C" {
 
 	GLAPI bool GL_Initialize(
 		int listenPort,
+		const char *stdoutPath, const char *stderrPath, 
 		void (*onStartGameSession)(GameSession *),
 		void (*onProcesTerminate)(),
 		bool (*onHealthCheck)());

@@ -17,6 +17,7 @@ namespace GameLiftNet {
 
 		static void Initialize(
 			int port,
+			String ^stdoutPath, String ^stderrPath,
 			StartGameSessionCallback ^onStartGameSession,
 			ProcessTerminateCallback ^onProcessTerminate,
 			HealthCheckCallback ^onHealthCheck);
