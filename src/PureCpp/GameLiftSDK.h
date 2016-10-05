@@ -7,11 +7,8 @@
 #endif
 
 extern "C" {
-	struct PlayerSession {
-
-	};
 	struct GameSession {
-
+		char name[256];
 	};
 
 	GLAPI bool GL_Initialize(
@@ -22,8 +19,8 @@ extern "C" {
 	GLAPI void GL_ProcessEnding();
 	GLAPI void GL_Destroy();
 
-	GLAPI void GL_ActivateGameSession();
-	GLAPI void GL_TerminateGameSession();
+	GLAPI bool GL_ActivateGameSession();
+	GLAPI bool GL_TerminateGameSession();
 
 	GLAPI bool GL_AcceptPlayerSession(const char *playerSessionId);
 	GLAPI bool GL_RemovePlayerSession(const char *playerSessionId);

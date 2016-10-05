@@ -49,11 +49,11 @@ void GL_Destroy() {
 	Aws::GameLift::Server::Destroy();
 }
 
-void GL_ActivateGameSession() {
-	Aws::GameLift::Server::ActivateGameSession();
+bool GL_ActivateGameSession() {
+	Aws::GameLift::Server::ActivateGameSession().IsSuccess();
 }
-void GL_TerminateGameSession() {
-	Aws::GameLift::Server::TerminateGameSession();
+bool GL_TerminateGameSession() {
+	Aws::GameLift::Server::TerminateGameSession().IsSuccess();
 }
 
 bool GL_AcceptPlayerSession(const char *playerSessionId) {
@@ -65,7 +65,13 @@ bool GL_RemovePlayerSession(const char *playerSessionId) {
 
 void OnStartGameSession(Aws::GameLift::Server::Model::GameSession gameSession) {
 	if (onStartGameSession != nullptr)
-		onStartGameSession(nullptr);
+	{
+		GameSession cppGameSession;
+
+		strcpy_s(cppGameSession.name, gameSession.GetName().c_str());
+
+		onStartGameSession(&cppGameSession);
+	}
 }
 void OnProcessTerminate() {
 	if (onProcesTerminate != nullptr)
