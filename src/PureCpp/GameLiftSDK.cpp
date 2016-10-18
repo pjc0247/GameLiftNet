@@ -5,6 +5,13 @@
 #include <aws/gamelift/server/GameLiftServerAPI.h>
 
 #pragma comment (lib, "aws-cpp-sdk-gamelift-server.lib")
+#pragma comment (lib, "libprotobuf.lib")
+#pragma comment (lib, "libprotobuf-lite.lib")
+#pragma comment (lib, "libprotoc.lib")
+#pragma comment (lib, "sioclient.lib")
+#pragma comment (lib, "libboost_system-vc140-mt-1_62.lib")
+#pragma comment (lib, "libboost_date_time-vc140-mt-1_62.lib")
+#pragma comment (lib, "libboost_random-vc140-mt-1_62.lib")
 
 static void(*onStartGameSession)(GameSession *);
 static void(*onProcesTerminate)();
